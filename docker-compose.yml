@@ -1,0 +1,30 @@
+# docker-compose.yml
+
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - '4324:5432'
+    volumes:
+      - addressbook-db:/var/lib/postgresql/data
+
+  addressbook:
+    build:
+      context: .
+    environment:
+      DB_NAME: semaphore
+      DB_USER: postgres
+      DB_PASSWORD: secrect
+      DB_HOST: postgres
+      DB_PORT: 4324
+    depends_on:
+      - postgres
+    ports:
+      - '4003:3000'
+        
+volumes:
+  addressbook-db:
